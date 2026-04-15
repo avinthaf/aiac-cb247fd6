@@ -19,18 +19,23 @@ export default function App() {
     setInput('')
   }
 
-  // BUG: compares id to the whole todo object instead of todo.id
+  // Toggle todo completion status
   function toggleTodo(id: number) {
     setTodos(todos.map(todo =>
-      todo === id ? { ...todo, completed: !todo.completed } : todo
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
     ))
   }
 
-  // TODO: not implemented
-  function deleteTodo(_id: number) {}
+  // Delete a todo
+  function deleteTodo(id: number) {
+    setTodos(todos.filter(todo => todo.id !== id))
+  }
 
-  // BUG: filter logic is missing — always returns all todos
-  const filtered = todos
+  const filtered = todos.filter(todo => {
+    if (filter === 'all') return true
+    if (filter === 'active') return !todo.completed
+    return todo.completed
+  })
 
   return (
     <div style={{ maxWidth: 480, margin: '60px auto', padding: '0 16px' }}>
@@ -118,9 +123,7 @@ export default function App() {
 
       {/* Footer */}
       {todos.length > 0 && (
-        <p style={{ marginTop: 16, fontSize: 13, color: '#aaa' }}>
-          {todos.filter(t => !t.completed).length} items left
-        </p>
+        <p style={{ marginTop: 16, fontSize: 13, color: '#aaa' }}>{todos.filter(t => !t.completed).length} items left</p>
       )}
     </div>
   )
