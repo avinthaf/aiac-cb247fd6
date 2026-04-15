@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: aiac-cb247fd6-web
+    runtime: static
+    rootDir: todo-app
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: dist
+    buildFilter:
+      paths:
+        - todo-app/**
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
